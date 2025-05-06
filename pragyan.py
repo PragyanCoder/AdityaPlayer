@@ -62,7 +62,7 @@ LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", 0))
 
 
 # OPTIONAL VARIABLES
-START_IMAGE_URL = getenv("START_IMAGE_URL", "https://graph.org/file/918101d0ad6b1207e6201.png")
+START_IMAGE_URL = getenv("START_IMAGE_URL", "https://graph.org/file/90593972cbbcede42541e-f699261003507569e5.jpg")
 
 
 app = Client("App", api_id=API_ID, api_hash=API_HASH, session_string=STRING_SESSION)
@@ -218,8 +218,8 @@ async def main():
         logs.info(f"🚫 Failed to start Assistant❗\n⚠️ Reason: {e}")
         sys.exit()
     try:
-        await app.join_chat("AdityaServer")
-        await app.join_chat("AdityaDiscus")
+        await app.join_chat("IktaraChats")
+        await app.join_chat("IktaraShayri")
     except Exception:
         pass
     if LOG_GROUP_ID != 0:
@@ -632,13 +632,10 @@ async def start_welcome_private(client, message):
     await add_served_user(chat_id)
     photo = START_IMAGE_URL
     mention = message.from_user.mention
-    caption = f"""**✅ Hello, {mention}
+    caption = f"""**✅ Ahoy, {mention}
 
-❍ i am an advanced, latest & verƴ
-powerƒul vc music player bot.
-
-❍ ƒeel ƒree to use me in your chat
-& share with your other ƒriends.**"""
+❍ your supreme, sonorous VC maestro awaits.
+❍ summon the symphony!.**"""
     buttons = InlineKeyboardMarkup(
         [
             [
@@ -1147,13 +1144,11 @@ async def post_bot_promotion(client, message):
             
     photo = START_IMAGE_URL
     caption = f"""
-**✅ Hello friends,
+**✅ Hello friends Ahoy ,
 
-❍ i am an advanced, latest &
-verƴ powerƒul vc player bot.
+❍ your supreme, sonorous VC maestro awaits.
 
-❍ ƒeel ƒree to use me & share
-with your other ƒriends.**"""
+❍ summon the symphony!.**"""
     buttons = InlineKeyboardMarkup(
         [
             [
