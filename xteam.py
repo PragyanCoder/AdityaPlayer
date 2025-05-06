@@ -702,7 +702,10 @@ async def start_audio_stream(client, message):
         await message.delete()
     except Exception:
         pass
+
     chat_id = message.chat.id
+
+    # Get the chat link, either from username or invite link
     if message.chat.username:
         chat_link = f"https://t.me/{message.chat.username}"
     else:
@@ -739,7 +742,7 @@ async def start_audio_stream(client, message):
             return await client.send_message(
                 chat_id, f"""
 **🥀 Give Me Some Query To
-Stream Audio Or Video❗...
+Stream Audio Or Video❗...**
 
 ℹ️ Example:
 ≽ Audio: `/play yalgaar`
@@ -750,7 +753,7 @@ Stream Audio Or Video❗...
         streamtype = "Audio" if not message.command[0].startswith("v") else "Video"
         info = await get_stream_info(query, streamtype)
         if not info:
-            return await aux.edit("**❌ Failed to fecth details, try\nanother song.**")
+            return await aux.edit("**❌ Failed to fetch details, try\nanother song.**")
             
         link = info.get("link")
         title = f"[{info.get('title')[:18]}]({link})"
@@ -803,18 +806,12 @@ Stream Audio Or Video❗...
             except NoActiveGroupCall:
                 try:
                     assistant = await client.get_chat_member(chat_id, app.me.id)
-                    if (
-                        assistant.status == ChatMemberStatus.BANNED
-                        or assistant.status == ChatMemberStatus.RESTRICTED
-                    ):
-                        return await aux.edit_text(
-                            f"**🤖 At first, unban [Assistant ID](https://t.me/{app.me.username}) to start stream❗**"
-                        )
+                    if assistant.status == ChatMemberStatus.BANNED or assistant.status == ChatMemberStatus.RESTRICTED:
+                        return await aux.edit_text(f"**🤖 At first, unban [Assistant ID](https://t.me/{app.me.username}) to start stream❗**")
                 except ChatAdminRequired:
-                    return await aux.edit_text(
-                        "**🤖 At first, Promote me as an admin❗**"
-                    )
+                    return await aux.edit_text("**🤖 At first, Promote me as an admin❗**")
                 except UserNotParticipant:
+                    # Assistant is not in the group, invite it
                     if message.chat.username:
                         invitelink = f"https://t.me/{message.chat.username}"
                         try:
@@ -833,22 +830,21 @@ Stream Audio Or Video❗...
                                 f"**🚫 Assistant Error:** `{e}`"
                             )
                     clinks[chat_id] = invitelink
+                    
+                    # Attempt to join the chat
                     try:
-                        await asyncio.sleep(1)
+                        await asyncio.sleep(1)  # Small delay
                         await app.join_chat(invitelink)
                     except InviteRequestSent:
                         try:
                             await client.approve_chat_join_request(chat_id, app.me.id)
                         except Exception as e:
-                            return await aux.edit_text(
-                                f"**🚫 Approve Error:** `{e}`"
-                            )
+                            return await aux.edit_text(f"**🚫 Approve Error:** `{e}`")
                     except UserAlreadyParticipant:
-                        pass
+                        pass  # The assistant is already in the group
                     except Exception as e:
-                        return await aux.edit_text(
-                            f"**🚫 Assistant Join Error:** `{e}`"
-                        )
+                        return await aux.edit_text(f"**🚫 Assistant Join Error:** `{e}`")
+                
                 try:
                     await call.play(chat_id, media_stream, config=call_config)
                 except NoActiveGroupCall:
@@ -881,6 +877,7 @@ Stream Audio Or Video❗...
             close_all_open_files()
         logs.error(str(e))
         await aux.edit("**❌ Failed to stream❗...**")
+
 
 
 @bot.on_message(filters.command("pause") & ~filters.private)
